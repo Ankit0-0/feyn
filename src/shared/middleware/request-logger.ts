@@ -1,8 +1,5 @@
-// not in use yet.
-
-
 import pinoHttp from "pino-http";
-import logger from "./logger";
+import logger from "../logger/logger";
 import { randomUUID } from "crypto";
 
 export const httpLogger = pinoHttp({
@@ -22,8 +19,17 @@ export const httpLogger = pinoHttp({
   customErrorMessage: function (req, res, err) {
     return `ERR ${req.method} ${req.url} -> ${res.statusCode}: ${err?.message}`;
   },
-  // Attach req/res objects (respects redaction + serializers)
-  serializers: {
-    // ...pinoHttp.stdSerializers,
+  customProps: (req, res) => ({
+    method: req.method,
+    url: req.url,
+  }),
+
+  autoLogging: {
+    ignore: (req) => req.url === "/health",
   },
+
+  // Attach req/res objects (respects redaction + serializers)
+  // serializers: {
+  // ...pinoHttp.stdSerializers,            // might add latter
+  // },
 });

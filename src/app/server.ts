@@ -12,5 +12,5 @@ const app = createApp();
 const server: HttpServer = createServer(app);
 
 server.listen(PORT, () => {
-  log.info({ port: PORT }, "Server started");
+  log.info({ port: PORT }, `Server started at http://localhost:${PORT}`);
 });
