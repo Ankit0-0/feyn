@@ -2,7 +2,7 @@ import express, { type Application } from "express";
 import helmet from "helmet";
 import { httpLogger } from "../shared/middleware/request-logger";
 
-import { router } from "./router";
+import router  from "./router";
 import { notFoundHandler } from "../shared/middleware/not-found";
 import { errorHandler } from "../shared/middleware/error-handler";
 

@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   channelIdentities ChannelIdentity[]
   driveConnections  DriveConnection[]
 
   @@map("users")
 }
-
 model ChannelIdentity {
   id         String   @id @default(uuid())
   userId     String
