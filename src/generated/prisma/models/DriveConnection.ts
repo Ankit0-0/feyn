@@ -232,6 +232,7 @@ export type DriveConnectionOrderByWithRelationInput = {
 
 export type DriveConnectionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  provider_providerAccountId?: Prisma.DriveConnectionProviderProviderAccountIdCompoundUniqueInput
   AND?: Prisma.DriveConnectionWhereInput | Prisma.DriveConnectionWhereInput[]
   OR?: Prisma.DriveConnectionWhereInput[]
   NOT?: Prisma.DriveConnectionWhereInput | Prisma.DriveConnectionWhereInput[]
@@ -244,7 +245,7 @@ export type DriveConnectionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"DriveConnection"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DriveConnection"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id">
+}, "id" | "provider_providerAccountId">
 
 export type DriveConnectionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -367,6 +368,11 @@ export type DriveConnectionListRelationFilter = {
 
 export type DriveConnectionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type DriveConnectionProviderProviderAccountIdCompoundUniqueInput = {
+  provider: string
+  providerAccountId: string
 }
 
 export type DriveConnectionCountOrderByAggregateInput = {

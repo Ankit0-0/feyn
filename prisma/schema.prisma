@@ -50,5 +50,6 @@ model DriveConnection {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@unique([provider, providerAccountId])
   @@map("drive_connections")
 }
