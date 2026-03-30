@@ -53,7 +53,9 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   ChannelIdentity: 'ChannelIdentity',
-  DriveConnection: 'DriveConnection'
+  DriveConnection: 'DriveConnection',
+  Attachment: 'Attachment',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -112,12 +114,54 @@ export const DriveConnectionScalarFieldEnum = {
 export type DriveConnectionScalarFieldEnum = (typeof DriveConnectionScalarFieldEnum)[keyof typeof DriveConnectionScalarFieldEnum]
 
 
+export const AttachmentScalarFieldEnum = {
+  id: 'id',
+  messageId: 'messageId',
+  platformFileId: 'platformFileId',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  fileSize: 'fileSize',
+  localUrl: 'localUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  channelIdentityId: 'channelIdentityId',
+  platform: 'platform',
+  direction: 'direction',
+  type: 'type',
+  externalUserId: 'externalUserId',
+  externalChatId: 'externalChatId',
+  externalMessageId: 'externalMessageId',
+  textContent: 'textContent',
+  rawPayload: 'rawPayload',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -134,4 +178,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

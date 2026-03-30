@@ -32,3 +32,13 @@ export type ChannelIdentity = Prisma.ChannelIdentityModel
  * 
  */
 export type DriveConnection = Prisma.DriveConnectionModel
+/**
+ * Model Attachment
+ * 
+ */
+export type Attachment = Prisma.AttachmentModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

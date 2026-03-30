@@ -1,0 +1,22 @@
+### Production TODOs (super concise)
+
+* Telegram retries → duplicates possible
+* Add idempotency → `platform + externalMessageId`
+* Don’t fail webhook if reply fails (always return 200)
+* Wrap Telegram send in try/catch
+* Separate inbound vs outbound logic
+* Add message status → pending/sent/failed
+* Retry outbound on failure (later)
+* Remove token from logs ⚠️ regenerate token
+* Add DB unique constraint for inbound
+* Add proper error logging (no crashes)
+* Replace tunnel with real deployment
+* Build ChannelIdentity linking flow
+* Add basic observability (inbound/outbound/errors)
+
+### Current state
+
+* Webhook working 
+* Inbound stored 
+* Reply working 
+* Retry caused duplicate (expected) 
