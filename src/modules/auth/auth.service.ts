@@ -55,7 +55,10 @@ export class AuthService {
       throw new Error("Invalid credentials");
     }
 
-    const isPasswordValid = await bcrypt.compare(body.password, user.passwordHash);
+    const isPasswordValid = await bcrypt.compare(
+      body.password,
+      user.passwordHash,
+    );
 
     if (!isPasswordValid) {
       throw new Error("Invalid credentials");
@@ -116,5 +119,57 @@ export class AuthService {
       userId: string;
       email: string;
     };
+  }
+
+  async linkChannel({
+    userId,
+    platform,
+    externalId,
+    username,
+  }: {
+    userId: string;
+    platform: string;
+    externalId: string;
+    username?: string;
+  }) {
+    const existingChannel = await prisma.channelIdentity.findUnique({
+      where: {
+        platform_externalId: {
+          platform,
+          externalId,
+        },
+      },
+    });
+
+    if (existingChannel) {
+      if (existingChannel.userId && existingChannel.userId !== userId) {
+        throw new Error(
+          "This Telegram account is already linked to another user",
+        );
+      }
+
+      const updatedChannel = await prisma.channelIdentity.update({
+        where: {
+          id: existingChannel.id,
+        },
+        data: {
+          userId,
+          isVerified: true,
+        },
+      });
+
+      return updatedChannel;
+    }
+
+    const newChannel = await prisma.channelIdentity.create({
+      data: {
+        userId,
+        platform,
+        externalId,
+        isVerified: true,
+      },
+    });
+
+    return newChannel;
   }
 }

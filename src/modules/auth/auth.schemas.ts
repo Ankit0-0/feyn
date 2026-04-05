@@ -33,5 +33,13 @@ export const signinSchema = z.object({
   }),
 });
 
+export const linkChannelSchema = z.object({
+  body: z.object({
+    platform: z.string().min(1),
+    externalId: z.string().min(1),
+    username: z.string().optional(),
+  }),
+});
+
 export type SignupBody = z.infer<typeof signupSchema>["body"];
 export type SigninBody = z.infer<typeof signinSchema>["body"];

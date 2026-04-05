@@ -2,6 +2,14 @@ import { prisma } from "../../shared/prisma/prisma";
 import { TelegramProvider } from "./providers/telegram.provider";
 import { NormalizedIncomingMessage, Platform } from "./message.types";
 
+type TelegramReplyMarkup = {
+  inline_keyboard: {
+    text: string;
+    url?: string;
+    callback_data?: string;
+  }[][];
+};
+
 export class MessageService {
   async ingestIncomingMessage(payload: NormalizedIncomingMessage) {
     const channelIdentity = await prisma.channelIdentity.findUnique({
@@ -45,7 +53,7 @@ export class MessageService {
     return {
       message,
       channelIdentity,
-      isLinkedUser: Boolean(channelIdentity),
+      isLinkedUser: Boolean(channelIdentity?.userId),
     };
   }
 
@@ -55,15 +63,23 @@ export class MessageService {
     text,
     userId,
     channelIdentityId,
+    replyMarkup,
   }: {
     platform: Platform;
     chatId: string;
     text: string;
     userId?: string | null;
     channelIdentityId?: string | null;
+    replyMarkup?: TelegramReplyMarkup;
   }) {
+    let providerResponse: unknown = {};
+
     if (platform === "telegram") {
-      await TelegramProvider.sendMessage(chatId, text);
+      providerResponse = await TelegramProvider.sendMessage(
+        chatId,
+        text,
+        replyMarkup,
+      );
     }
 
     const outboundMessage = await prisma.message.create({
@@ -75,7 +91,7 @@ export class MessageService {
         type: "text",
         externalChatId: chatId,
         textContent: text,
-        rawPayload: {},
+        rawPayload: providerResponse as any,
       },
     });
 

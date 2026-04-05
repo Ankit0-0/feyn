@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feyn Onboarding</title>
+    <link rel="stylesheet" href="/onboarding.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1>Connect Telegram to Feyn</h1>
+        <p class="subtitle">Sign in or create your account to link Telegram.</p>
+
+        <div class="telegram-box">
+          <span id="telegramIdentity">Loading...</span>
+        </div>
+
+        <input id="name" placeholder="Name" />
+        <input id="email" type="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password" />
+
+        <div class="button-row">
+          <button id="signupBtn" class="primary-btn">Sign up & link</button>
+          <button id="signinBtn" class="secondary-btn">Sign in & link</button>
+        </div>
+
+        <button id="connectDriveBtn" class="secondary-btn hidden-btn">
+          Connect Google Drive
+        </button>
+
+        <div id="status" class="status"></div>
+      </div>
+    </div>
+
+    <script src="/onboarding.js" defer></script>
+  </body>
+</html>

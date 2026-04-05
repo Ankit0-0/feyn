@@ -50,4 +50,26 @@ export class AuthController {
       next(error);
     }
   }
+
+  async linkChannel(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = (req as any).userId as string;
+      const { platform, externalId, username } = req.body;
+
+      const channelIdentity = await authService.linkChannel({
+        userId,
+        platform,
+        externalId,
+        username,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Channel linked successfully",
+        data: channelIdentity,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

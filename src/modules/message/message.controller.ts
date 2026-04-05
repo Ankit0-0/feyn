@@ -4,6 +4,14 @@ import { MessageService } from "./message.service";
 
 const messageService = new MessageService();
 
+type TelegramReplyMarkup = {
+  inline_keyboard: {
+    text: string;
+    url?: string;
+    callback_data?: string;
+  }[][];
+};
+
 export class MessageController {
   static async handleTelegramWebhook(
     req: Request,
@@ -37,9 +45,39 @@ export class MessageController {
       );
 
       let replyText = "Message received.";
+      let replyMarkup: TelegramReplyMarkup | undefined = undefined;
 
       if (!result.isLinkedUser) {
-        replyText = "Your Telegram account is not linked yet. Please sign in and connect your account first.";
+        const publicBaseUrl = process.env.PUBLIC_BASE_URL;
+
+        if (!publicBaseUrl) {
+          throw new Error("PUBLIC_BASE_URL is not configured");
+        }
+
+        const telegramUsername =
+          req.body?.message?.from?.username ||
+          req.body?.message?.from?.first_name ||
+          "";
+
+        const onboardingUrl =
+          `${publicBaseUrl}/onboarding.html` +
+          `?platform=telegram` +
+          `&telegramUserId=${encodeURIComponent(normalizedMessage.externalUserId ?? "")}` +
+          `&telegramUsername=${encodeURIComponent(telegramUsername)}`;
+
+        replyText =
+          "Your Telegram account is not linked yet.\n\nConnect your account first:";
+
+        replyMarkup = {
+          inline_keyboard: [
+            [
+              {
+                text: "🔗 Connect Account",
+                url: onboardingUrl,
+              },
+            ],
+          ],
+        };
       }
 
       await messageService.sendTextMessage({
@@ -48,6 +86,7 @@ export class MessageController {
         text: replyText,
         userId: result.channelIdentity?.userId ?? null,
         channelIdentityId: result.channelIdentity?.id ?? null,
+        replyMarkup,
       });
 
       req.log.info(

@@ -3,7 +3,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { validateRequest } from "../../shared/middleware/validate-request";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { signinSchema, signupSchema } from "./auth.schemas";
+import { signinSchema, signupSchema, linkChannelSchema } from "./auth.schemas";
 
 const router = Router();
 
@@ -44,6 +44,13 @@ router.post(
   "/signin",
   validateRequest(signinSchema),
   authController.signin.bind(authController),
+);
+
+router.post(
+  "/link-channel",
+  requireAuth,
+  validateRequest(linkChannelSchema),
+  authController.linkChannel.bind(authController),
 );
 
 router.get("/me", requireAuth, authController.me.bind(authController));

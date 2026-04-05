@@ -1,6 +1,16 @@
 import axios from "axios";
 import { NormalizedIncomingMessage } from "../message.types";
 
+type TelegramInlineKeyboardButton = {
+  text: string;
+  url?: string;
+  callback_data?: string;
+};
+
+type TelegramReplyMarkup = {
+  inline_keyboard: TelegramInlineKeyboardButton[][];
+};
+
 export class TelegramProvider {
   static parseIncoming(update: any): NormalizedIncomingMessage | null {
     const message = update?.message;
@@ -53,7 +63,11 @@ export class TelegramProvider {
     return null;
   }
 
-  static async sendMessage(chatId: string, text: string) {
+  static async sendMessage(
+    chatId: string,
+    text: string,
+    replyMarkup?: TelegramReplyMarkup,
+  ) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
 
     if (!token) {
@@ -65,6 +79,7 @@ export class TelegramProvider {
     const response = await axios.post(url, {
       chat_id: chatId,
       text,
+      reply_markup: replyMarkup,
     });
 
     return response.data;

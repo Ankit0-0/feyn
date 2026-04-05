@@ -2,6 +2,10 @@ import express, { type Application } from "express";
 import helmet from "helmet";
 import { httpLogger } from "../shared/middleware/request-logger";
 
+import path from "path";
+
+
+
 import router  from "./router";
 import { notFoundHandler } from "../shared/middleware/not-found";
 import { errorHandler } from "../shared/middleware/error-handler";
@@ -13,6 +17,7 @@ export const createApp = (): Application => {
   app.use(express.json());
   app.use(httpLogger); // turn on to show request logs
   app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(process.cwd(), "public")));
 
   app.get("/health", (_req, res) => {
     res.status(200).json({
